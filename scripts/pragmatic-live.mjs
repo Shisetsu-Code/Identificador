@@ -73,9 +73,9 @@ try {
         await landing.waitForTimeout(4000);
         await landing.screenshot({path:out+'/after-intro-control.png'});
         // Keep the main game session after clicking the intro entry control.
-        diagnostics.introFrameReloaded = true;
+        diagnostics.introFrameReloaded = false;
         await landing.waitForTimeout(12000);
-        await landing.screenshot({path:out+'/after-intro-reload.png'});
+        await landing.screenshot({path:out+'/gameplay-after-entry.png'});
       } else diagnostics.errors.push('Intro checkbox: unexpected frame rectangle');
     } catch(e) {diagnostics.errors.push('Intro checkbox: '+String(e.message).slice(0,180));}
   }
