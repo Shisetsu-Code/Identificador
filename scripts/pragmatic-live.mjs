@@ -65,6 +65,13 @@ try {
         diagnostics.introCheckboxClicked = true;
         await landing.waitForTimeout(800);
         await landing.screenshot({path:out+'/checkbox-after-click.png'});
+        // Single entry control on the intro feature screen; never click a buy
+        // or antebet option. Capture the state before any restart.
+        const entryPoint = {x: bounds.x + bounds.width * 0.887, y: bounds.y + bounds.height * 0.715};
+        diagnostics.introEntryPoint = entryPoint;
+        await landing.mouse.click(entryPoint.x,entryPoint.y);
+        await landing.waitForTimeout(4000);
+        await landing.screenshot({path:out+'/after-intro-control.png'});
         await featureFrame.evaluate(() => location.reload()).catch(()=>{});
         diagnostics.introFrameReloaded = true;
         await landing.waitForTimeout(12000);
