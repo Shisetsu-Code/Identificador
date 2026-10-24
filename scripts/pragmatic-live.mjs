@@ -50,6 +50,28 @@ try {
     catch(e){diagnostics.errors.push('demo-launch: '+String(e.message).slice(0,180));}
   } else diagnostics.errors.push('No official demo-launch button/link found on landing page');
   await landing.waitForTimeout(10000);
+  // Canvas intro exposes a visible 'DON'T SHOW NEXT TIME' checkbox.
+  // Coordinates are fractions of the embedded game rectangle, calibrated
+  // against the actual screenshot; do not click the spin/replay symbol.
+  const featureFrame = landing.frames().find(f => f.url().includes('demogamesfree.pragmaticplay.net/gs2c/html5Game'));
+  if (featureFrame) {
+    try {
+      const embedding = await featureFrame.frameElement();
+      const bounds = await embedding.boundingBox();
+      if (bounds && bounds.width >= 600 && bounds.height >= 380) {
+        const point = {x: bounds.x + bounds.width * 0.803, y: bounds.y + bounds.height * 0.876};
+        diagnostics.introCheckboxPoint = point;
+        await landing.mouse.click(point.x,point.y);
+        diagnostics.introCheckboxClicked = true;
+        await landing.waitForTimeout(800);
+        await landing.screenshot({path:out+'/checkbox-after-click.png'});
+        await featureFrame.evaluate(() => location.reload()).catch(()=>{});
+        diagnostics.introFrameReloaded = true;
+        await landing.waitForTimeout(12000);
+        await landing.screenshot({path:out+'/after-intro-reload.png'});
+      } else diagnostics.errors.push('Intro checkbox: unexpected frame rectangle');
+    } catch(e) {diagnostics.errors.push('Intro checkbox: '+String(e.message).slice(0,180));}
+  }
   // Intro is a carousel inside the game frame, not gameplay. Use only
   // explicit skip/continue controls, or its intro-only slide navigation.
   diagnostics.introActions = [];
