@@ -72,7 +72,7 @@ try {
         await landing.mouse.click(entryPoint.x,entryPoint.y);
         await landing.waitForTimeout(4000);
         await landing.screenshot({path:out+'/after-intro-control.png'});
-        await featureFrame.evaluate(() => location.reload()).catch(()=>{});
+        // Keep the main game session after clicking the intro entry control.
         diagnostics.introFrameReloaded = true;
         await landing.waitForTimeout(12000);
         await landing.screenshot({path:out+'/after-intro-reload.png'});
