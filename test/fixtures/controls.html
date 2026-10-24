@@ -1,0 +1,5 @@
+<!doctype html><html lang="es"><meta charset="utf-8"><style>
+body{margin:0;background:#17203a;color:white;font:16px sans-serif}.row{display:flex;gap:22px;padding:50px}button,[role=button],.card{padding:16px 30px;cursor:pointer}#hidden{display:none}#cover{position:absolute;left:400px;top:180px;width:150px;height:80px;background:black}#covered{position:absolute;left:410px;top:190px}#custom{width:100px;background:#654}#decor{width:100px;padding:12px;background:#445}#nested{margin:20px}
+</style><div class="row"><button id="buy">Abrir menú A</button><button id="ante">Abrir menú B</button><button id="disabled" disabled>No</button><button id="hidden">Oculto</button></div>
+<div id="custom">Control</div><div id="decor">Decoración</div><button id="covered">Tapado</button><div id="cover"></div><button id="nested"><span role="button">Interno</span></button><button id="offscreen" style="position:absolute;left:1500px">Fuera</button>
+<script>window.clicks=0;document.querySelector('#buy').addEventListener('click',()=>window.clicks++);document.querySelector('#custom').addEventListener('pointerdown',()=>window.clicks++);</script></html>

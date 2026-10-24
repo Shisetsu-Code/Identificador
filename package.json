@@ -1,0 +1,17 @@
+{
+  "name": "identificador",
+  "version": "0.1.0",
+  "description": "Detecta controles DOM y canvas y dibuja botones genéricos sin llamadas a modelos",
+  "private": true,
+  "type": "module",
+  "engines": {"node": ">=22"},
+  "bin": {"identificador": "./bin/identificador.mjs"},
+  "scripts": {
+    "start": "node bin/identificador.mjs",
+    "demo": "node bin/identificador.mjs --demo",
+    "test": "node --test test/*.test.mjs",
+    "test:unit": "node --test test/knowledge.test.mjs test/har.test.mjs test/uht-adapter.test.mjs",
+    "test:browser": "node --test test/browser.test.mjs test/runner.test.mjs"
+  },
+  "dependencies": {"playwright": "1.56.1"}
+}

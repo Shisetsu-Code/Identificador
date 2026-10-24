@@ -1,0 +1,11 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Identificador · Demo de botones</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0b101c;color:#e9eefb;font:15px/1.5 system-ui,sans-serif}main{width:min(1120px,94vw);margin:32px auto}header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}.brand{display:flex;align-items:center;gap:12px;font-weight:700;letter-spacing:2px;font-size:13px}.mark{width:24px;height:24px;border:2px solid #64ddc9;border-radius:6px;box-shadow:inset 0 0 0 5px #0b101c;background:#64ddc9}.tag{font:11px ui-monospace,monospace;letter-spacing:1px;color:#8a99b1;border:1px solid #293348;padding:7px 12px;border-radius:16px}h1{font-size:29px;letter-spacing:-.9px;margin:0 0 8px}p{color:#8c9bb3;margin:0}.intro{display:flex;justify-content:space-between;gap:25px;align-items:end;margin:0 0 22px}.legend{display:flex;gap:17px;white-space:nowrap;font-size:12px}.dot{display:inline-block;border-radius:50%;width:7px;height:7px;margin-right:6px}.new{background:#ffc957}.known{background:#3bffc2}canvas{display:block;width:100%;height:auto;border:1px solid #29344c;border-radius:15px;background:#141d30}footer{display:flex;justify-content:space-between;gap:20px;margin-top:16px;font-size:12px;color:#75859e}footer strong{color:#aab8cd;font-weight:500}#state{font-family:ui-monospace,monospace;color:#64ddc9}@media(max-width:700px){.intro{display:block}.legend{margin-top:14px}h1{font-size:24px}footer{display:block}.tag{display:none}}
+</style></head><body><main>
+<header><div class="brand"><i class="mark"></i>IDENTIFICADOR</div><span class="tag">LOCAL · SIN LLAMADAS A IA</span></header>
+<div class="intro"><div><h1>Cada botón, un recuadro.</h1><p>Abrí los menús: el detector sigue los controles visibles.</p></div><div class="legend"><span><i class="dot new"></i>Nuevo</span><span><i class="dot known"></i>Confirmado</span></div></div>
+<canvas id="stage" width="1120" height="580" aria-label="Escena sintética con dos menús interactivos"></canvas>
+<footer><span><strong>Escena propia de prueba.</strong> Los recuadros provienen de zonas interactivas del canvas.</span><span id="state">VISTA PRINCIPAL</span></footer>
+</main><script src="demo-scene.js"></script></body></html>

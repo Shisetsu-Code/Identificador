@@ -1,0 +1,28 @@
+name: Tests
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm test
+      - run: npm start -- --demo --headless --seconds 1 --output output
+      - uses: actions/upload-artifact@v4
+        with:
+          name: synthetic-demo
+          path: |
+            output/all.json
+            output/unknown.json
+            output/overlay.png
+          if-no-files-found: error
