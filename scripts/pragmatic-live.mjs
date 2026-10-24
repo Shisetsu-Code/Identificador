@@ -20,6 +20,28 @@ try {
   const landing=await context.newPage();
   await landing.goto(url,{waitUntil:'domcontentloaded',timeout:45000}).catch(e=>diagnostics.errors.push('landing: '+String(e.message).slice(0,180)));
   await landing.waitForTimeout(5000);
+  // The operator explicitly confirms being an adult. Use the site's normal
+  // affirmation control, never alter age/session cookies or bypass geo blocks.
+  const pageContexts = () => context.pages().flatMap(p => p.frames());
+  const clickFirst = async (pattern, label) => {
+    for (const frame of pageContexts()) {
+      for (const role of ['button', 'link']) {
+        const item = frame.getByRole(role, { name: pattern }).first();
+        try {
+          if (await item.isVisible({ timeout: 1000 })) {
+            await item.click({timeout: 5000});
+            diagnostics.errors.push('Resolved visible ' + label + ' dialog');
+            return true;
+          }
+        } catch {}
+      }
+    }
+    return false;
+  };
+  await clickFirst(/^(yes,? i am (18|over 18)|i am (over )?(18|21)|i am of legal age|yes,? i am|enter site|over 18|i confirm.*18|sí,? soy mayor de edad)$/i, 'age');
+  await landing.waitForTimeout(1800);
+  await clickFirst(/^(reject all|reject optional|necessary only|only necessary|decline|accept all|accept cookies|agree|got it|ok|aceptar|rechazar|solo necesarias)$/i, 'cookie');
+  await landing.waitForTimeout(1800);
   // Only launch an official demo. Never initiate a spin, stake or bonus purchase.
   let launch=landing.getByRole('button',{name:/^(play now|play demo|demo)$/i}).first();
   if(await launch.count()===0) launch=landing.getByRole('link',{name:/^(play now|play demo|demo)$/i}).first();
