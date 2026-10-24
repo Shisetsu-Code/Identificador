@@ -38,7 +38,7 @@ try {
     }
     return false;
   };
-  await clickFirst(/^(yes,? i am (18|over 18)|i am (over )?(18|21)|i am of legal age|yes,? i am|enter site|over 18|i confirm.*18|sí,? soy mayor de edad)$/i, 'age');
+  await clickFirst(/^(yes,? i am 18 years or older|yes,? i am (18|over 18)|i am (over )?(18|21)|i am of legal age|yes,? i am|enter site|over 18|i confirm.*18|sí,? soy mayor de edad)$/i, 'age');
   await landing.waitForTimeout(1800);
   await clickFirst(/^(reject all|reject optional|necessary only|only necessary|decline|accept all|accept cookies|agree|got it|ok|aceptar|rechazar|solo necesarias)$/i, 'cookie');
   await landing.waitForTimeout(1800);
