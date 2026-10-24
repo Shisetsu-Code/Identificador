@@ -53,7 +53,7 @@ try {
   // Intro is a carousel inside the game frame, not gameplay. Use only
   // explicit skip/continue controls, or its intro-only slide navigation.
   diagnostics.introActions = [];
-  const gameFrame = () => landing.frames().find(f => /demogamesfree\\.pragmaticplay\\.net\\/gs2c\\/html5Game/.test(f.url()));
+  const gameFrame = () => landing.frames().find(f => f.url().includes('demogamesfree.pragmaticplay.net/gs2c/html5Game'));
   for (let attempt = 0; attempt < 8; attempt++) {
     const frame = gameFrame();
     if (!frame) { diagnostics.introActions.push('game frame unavailable'); break; }
