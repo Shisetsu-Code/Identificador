@@ -1,0 +1,28 @@
+name: Live Pragmatic Play detector smoke test
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/pragmatic-live.mjs'
+      - '.github/workflows/pragmatic-live.yml'
+permissions:
+  contents: read
+jobs:
+  rat-royale:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: node scripts/pragmatic-live.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pragmatic-live-visual-diagnostics
+          path: output/pragmatic-live/
+          if-no-files-found: warn
