@@ -49,7 +49,43 @@ try {
     try {await launch.click({timeout:10000});diagnostics.launchedDemo=true;}
     catch(e){diagnostics.errors.push('demo-launch: '+String(e.message).slice(0,180));}
   } else diagnostics.errors.push('No official demo-launch button/link found on landing page');
-  await landing.waitForTimeout(25000);
+  await landing.waitForTimeout(10000);
+  // Intro is a carousel inside the game frame, not gameplay. Use only
+  // explicit skip/continue controls, or its intro-only slide navigation.
+  diagnostics.introActions = [];
+  const gameFrame = () => landing.frames().find(f => /demogamesfree\\.pragmaticplay\\.net\\/gs2c\\/html5Game/.test(f.url()));
+  for (let attempt = 0; attempt < 8; attempt++) {
+    const frame = gameFrame();
+    if (!frame) { diagnostics.introActions.push('game frame unavailable'); break; }
+    const candidates = [
+      frame.getByRole('button', {name:/^(skip|skip intro|continue|start game|play game|close intro|close|next|got it)$/i}),
+      frame.getByText(/^(skip|skip intro|continue|start game|play game|next)$/i),
+    ];
+    let clicked = false;
+    for (const locator of candidates) {
+      const target = locator.first();
+      if (await target.isVisible().catch(()=>false)) {
+        try { await target.click({timeout:2500});diagnostics.introActions.push('clicked named intro control');clicked=true;break; } catch {}
+      }
+    }
+    if (!clicked) {
+      // Main intro is a safe, non-wagering feature slide with a row of
+      // progress dots and a replay graphic. Click a progress dot only
+      // while this explicit intro-only banner is present.
+      const introPresent = await frame.getByText(/DON.T SHOW NEXT TIME|WILDS WITH RANDOM MULTIPLIERS/i).count().catch(()=>0);
+      if (introPresent) {
+        await frame.locator('body').press('Escape').catch(()=>{});
+        diagnostics.introActions.push('intro visible; Escape sent');
+      } else {
+        diagnostics.introActions.push('intro marker not found in DOM; retaining screenshot');
+      }
+    }
+    await landing.waitForTimeout(1500);
+    if (attempt===2 || attempt===7) {
+      await landing.screenshot({path:out+'/intro-stage-'+attempt+'.png'}).catch(()=>{});
+    }
+  }
+  await landing.waitForTimeout(15000);
   const store=await KnowledgeStore.open(out+'/knowledge.json');
   for(const p of context.pages()) {
     const snap=await observePage(p,store,{scope:'rat-royale-live',seconds:2,intervalMs:500});
