@@ -59,7 +59,7 @@ try {
       const embedding = await featureFrame.frameElement();
       const bounds = await embedding.boundingBox();
       if (bounds && bounds.width >= 600 && bounds.height >= 380) {
-        const point = {x: bounds.x + bounds.width * 0.803, y: bounds.y + bounds.height * 0.876};
+        const point = {x: bounds.x + bounds.width * 0.803, y: bounds.y + bounds.height * 0.928};
         diagnostics.introCheckboxPoint = point;
         await landing.mouse.click(point.x,point.y);
         diagnostics.introCheckboxClicked = true;
